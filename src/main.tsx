@@ -55,12 +55,9 @@ function App() {
             <p>
               Live mode is deliberately blocked until the Firebase project,
               security rules, trusted operations and data adapters have been
-              reviewed and connected. No demo data will be used as a fallback.
+              reviewed and connected.
             </p>
-            <p>
-              See FIREBASE_SETUP.md. Set VITE_DATA_MODE=demo to explore the
-              isolated local demo.
-            </p>
+            <p>Please contact the website administrator for assistance.</p>
           </div>
         ) : hash === "#owner" ? (
           <Dashboard />

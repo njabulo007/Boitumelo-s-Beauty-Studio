@@ -75,7 +75,7 @@ export function seed(): State {
     customers: [
       {
         id: "sample",
-        name: "Lerato (sample)",
+        name: "Lerato",
         email: "lerato@example.test",
         marketing: false,
       },
@@ -141,7 +141,7 @@ export type Command =
   | { type: "voidVisit"; id: string; reason: string };
 export function apply(state: State, actor: Actor, command: Command): State {
   if (actor?.role !== "admin")
-    throw new Error("Only the owner demo can make this change.");
+    throw new Error("Only the owner can make this change.");
   if ("token" in command && state.processed.includes(command.token))
     return state;
   const next = structuredClone(state);

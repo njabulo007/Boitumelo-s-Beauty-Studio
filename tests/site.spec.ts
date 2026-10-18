@@ -9,6 +9,15 @@ test("public site, navigation, lightbox, missing-contact feedback and fallback",
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "A little care.",
   );
+  await expect(page.locator("#contact")).toContainText(
+    "13074 Lehole Street, Tsakane, Brakpan",
+  );
+  await expect(
+    page.getByRole("link", { name: "Get directions" }),
+  ).toHaveAttribute("href", /13074%20Lehole%20Street/);
+  await expect(page.locator("body")).not.toContainText(
+    /demo|sample|website preview/i,
+  );
   await page.getByRole("tab", { name: /Hair/ }).click();
   await expect(page.getByRole("tabpanel")).toContainText("Protective styling");
   await page.getByRole("tab", { name: /Nails/ }).click();
@@ -33,7 +42,7 @@ test("owner edits shared prices, publishes and ends an offer", async ({
   page,
 }) => {
   await page.goto("/#owner");
-  await page.getByRole("button", { name: "Open owner demo" }).click();
+  await page.getByRole("button", { name: "Open owner dashboard" }).click();
   await page
     .getByRole("button", { name: "Services & pricing", exact: true })
     .click();
@@ -104,8 +113,11 @@ test("registration, sign-out, password reset explanation and owner/customer sepa
   await page
     .getByLabel("Email address", { exact: true })
     .fill("test@example.test");
-  await page.getByLabel("Demo password", { exact: true }).fill("demo-pass-123");
-  await page.getByRole("button", { name: "Create demo account" }).click();
+  await page.getByLabel("Password", { exact: true }).fill("demo-pass-123");
+  await page
+    .locator("form")
+    .getByRole("button", { name: "Create account", exact: true })
+    .click();
   await expect(page.locator(".account-title")).toContainText("Test");
   await expect(
     page.getByRole("button", { name: "Record completed visit" }),
@@ -117,13 +129,13 @@ test("registration, sign-out, password reset explanation and owner/customer sepa
     .fill("test@example.test");
   await page.getByRole("button", { name: "Show reset options" }).click();
   await expect(page.getByRole("status")).toContainText(
-    "cannot send password reset emails",
+    "Password reset emails are not available yet",
   );
   await page.getByRole("button", { name: "Back to sign in" }).click();
   await page
     .getByLabel("Email address", { exact: true })
     .fill("test@example.test");
-  await page.getByLabel("Demo password", { exact: true }).fill("demo-pass-123");
+  await page.getByLabel("Password", { exact: true }).fill("demo-pass-123");
   await page
     .getByRole("button", { name: "Sign in", exact: true })
     .last()
@@ -131,14 +143,14 @@ test("registration, sign-out, password reset explanation and owner/customer sepa
   await expect(page.locator(".account-title")).toContainText("Test");
   await page.goto("/#owner");
   await expect(
-    page.getByRole("button", { name: "Open owner demo" }),
+    page.getByRole("button", { name: "Open owner dashboard" }),
   ).toBeVisible();
 });
 test("five owner-recorded visits earn one reward and redemption updates customer history", async ({
   page,
 }) => {
   await page.goto("/#owner");
-  await page.getByRole("button", { name: "Open owner demo" }).click();
+  await page.getByRole("button", { name: "Open owner dashboard" }).click();
   await page
     .getByRole("button", { name: "Customers & rewards", exact: true })
     .click();
@@ -158,17 +170,13 @@ test("five owner-recorded visits earn one reward and redemption updates customer
     page.getByRole("button", { name: "Redeem reward", exact: true }),
   ).toBeDisabled();
   await page.goto("/#rewards");
-  await page
-    .getByRole("button", { name: "Explore the sample account" })
-    .click();
-  await expect(page.locator(".history-list")).toContainText(
-    "Sample reward redeemed",
-  );
+  await page.getByRole("button", { name: "Explore rewards" }).click();
+  await expect(page.locator(".history-list")).toContainText("Reward redeemed");
   await expect(page.locator(".history-list>div")).toHaveCount(6);
 });
 test("gallery caption, category management and reset", async ({ page }) => {
   await page.goto("/#owner");
-  await page.getByRole("button", { name: "Open owner demo" }).click();
+  await page.getByRole("button", { name: "Open owner dashboard" }).click();
   await page
     .getByRole("button", { name: "Services & pricing", exact: true })
     .click();
@@ -195,13 +203,11 @@ test("gallery caption, category management and reset", async ({ page }) => {
     page.getByRole("button", { name: "Lashes", exact: true }),
   ).toBeVisible();
   await page.goto("/#owner");
-  await page
-    .getByRole("button", { name: "Demo settings", exact: true })
-    .click();
-  await page.getByRole("button", { name: "Reset demo data" }).click();
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.getByRole("button", { name: "Reset workspace data" }).click();
   await page.getByRole("button", { name: "Confirm", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Open owner demo" }),
+    page.getByRole("button", { name: "Open owner dashboard" }),
   ).toBeVisible();
 });
 for (const width of [360, 390, 768, 1440])
@@ -233,7 +239,7 @@ for (const width of [360, 390, 768, 1440])
       ),
     ).toBeTruthy();
     await page.goto("/#owner");
-    await page.getByRole("button", { name: "Open owner demo" }).click();
+    await page.getByRole("button", { name: "Open owner dashboard" }).click();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -268,16 +274,14 @@ test("image upload validation, compressed preview, persistence and confirmed rem
   page,
 }) => {
   await page.goto("/#owner");
-  await page.getByRole("button", { name: "Open owner demo" }).click();
+  await page.getByRole("button", { name: "Open owner dashboard" }).click();
   await page.getByRole("button", { name: "Gallery", exact: true }).click();
   await page.getByRole("button", { name: "Add photograph" }).click();
-  await page
-    .getByLabel("Choose a photograph", { exact: true })
-    .setInputFiles({
-      name: "bad.txt",
-      mimeType: "text/plain",
-      buffer: Buffer.from("not an image"),
-    });
+  await page.getByLabel("Choose a photograph", { exact: true }).setInputFiles({
+    name: "bad.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("not an image"),
+  });
   await expect(page.getByRole("alert")).toContainText("JPG, PNG or WebP");
   const data = await page.evaluate(() => {
     const c = document.createElement("canvas");
@@ -288,13 +292,11 @@ test("image upload validation, compressed preview, persistence and confirmed rem
     ctx.fillRect(0, 0, 1600, 1000);
     return c.toDataURL("image/png").split(",")[1];
   });
-  await page
-    .getByLabel("Choose a photograph", { exact: true })
-    .setInputFiles({
-      name: "demo-photo.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(data, "base64"),
-    });
+  await page.getByLabel("Choose a photograph", { exact: true }).setInputFiles({
+    name: "demo-photo.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(data, "base64"),
+  });
   await expect(page.locator(".photo-preview img")).toBeVisible();
   await page
     .getByLabel("Caption", { exact: true })

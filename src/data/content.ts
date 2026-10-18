@@ -31,12 +31,14 @@ export type Promotion = {
 export const business = {
   name: "Boitumelo’s",
   whatsapp: import.meta.env.VITE_SALON_WHATSAPP || "",
-  address: import.meta.env.VITE_SALON_ADDRESS || "",
+  address:
+    import.meta.env.VITE_SALON_ADDRESS ||
+    "13074 Lehole Street, Tsakane, Brakpan",
   hours: import.meta.env.VITE_SALON_HOURS || "",
   loyalty: {
     visits: 5,
     reward: "20% off one treatment",
-    label: "Sample reward — subject to owner approval",
+    label: "Loyalty reward",
   },
 };
 export const photos: Photo[] = [
@@ -46,7 +48,7 @@ export const photos: Photo[] = [
     alt: "Close-up of an elegant pink manicure",
     category: "Nails",
     caption: "A soft touch of pink",
-    source: "Unsplash / stock photograph",
+    source: "Unsplash",
     placeholder: true,
   },
   {
@@ -55,7 +57,7 @@ export const photos: Photo[] = [
     alt: "Hairstylist carefully styling hair in a salon",
     category: "Hair",
     caption: "Good hair, good mood",
-    source: "Unsplash / stock photograph",
+    source: "Unsplash",
     placeholder: true,
   },
   {
@@ -64,7 +66,7 @@ export const photos: Photo[] = [
     alt: "A relaxing facial treatment",
     category: "Beauty",
     caption: "A moment just for you",
-    source: "Unsplash / stock photograph",
+    source: "Unsplash",
     placeholder: true,
   },
   {
@@ -73,7 +75,7 @@ export const photos: Photo[] = [
     alt: "Detailed nail art and polished nails",
     category: "Nails",
     caption: "The little details",
-    source: "Unsplash / stock photograph",
+    source: "Unsplash",
     placeholder: true,
   },
 ];

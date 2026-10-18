@@ -43,7 +43,7 @@ type Panel =
   | "Gallery"
   | "Customers & rewards"
   | "Activity log"
-  | "Demo settings";
+  | "Settings";
 const panels: Panel[] = [
   "Overview",
   "Services & pricing",
@@ -51,7 +51,7 @@ const panels: Panel[] = [
   "Gallery",
   "Customers & rewards",
   "Activity log",
-  "Demo settings",
+  "Settings",
 ];
 const icons = [
   LayoutDashboard,
@@ -103,7 +103,7 @@ export default function Dashboard() {
   function execute(command: Command) {
     try {
       demo.run(command);
-      toast("Saved to this browser’s demo.");
+      toast("Changes saved.");
       return true;
     } catch (e) {
       toast((e as Error).message);
@@ -156,15 +156,11 @@ export default function Dashboard() {
             A simple space to look after your menu, pictures, offers and
             customers.
           </p>
-          <Notice>
-            This is an openly accessible owner demo with synthetic data. Live
-            access requires Firebase sign-in and a trusted administrator claim.
-          </Notice>
           <button
             className="button dark full"
             onClick={() => demo.setActor({ role: "admin", id: "demo-owner" })}
           >
-            Open owner demo <ArrowUpRight size={17} />
+            Open owner dashboard <ArrowUpRight size={17} />
           </button>
           <a href="#home" className="text-link">
             Back to the salon
@@ -202,11 +198,11 @@ export default function Dashboard() {
           <div>
             <span className="avatar">B</span>
             <span>
-              Boitumelo<small>Demo owner</small>
+              Boitumelo<small>Owner</small>
             </span>
           </div>
           <button onClick={() => demo.setActor(null)} className="small-link">
-            <LogOut size={15} /> Leave owner demo
+            <LogOut size={15} /> Sign out
           </button>
           <a href="#home" className="button outline">
             <Eye size={16} /> View website
@@ -225,9 +221,6 @@ export default function Dashboard() {
           </button>
           <span>
             Owner’s space <ChevronRight size={13} /> {panel}
-          </span>
-          <span className="demo-pill">
-            <span className="status-dot" /> LOCAL DEMO
           </span>
         </div>
         <main className="dashboard-body">
@@ -256,7 +249,7 @@ export default function Dashboard() {
                     "Customers & rewards":
                       "Care for your customers and celebrate their visits.",
                     "Activity log": "A record of what changed, when, and why.",
-                    "Demo settings":
+                    Settings:
                       "A safe space to explore, reset, and start again.",
                   }[panel]
                 }
@@ -315,7 +308,7 @@ export default function Dashboard() {
                     alt: "",
                     caption: "",
                     category: state.categories[0] || "Nails",
-                    source: "Owner demo upload",
+                    source: "Salon upload",
                     placeholder: false,
                   })
                 }
@@ -329,10 +322,10 @@ export default function Dashboard() {
               <div className="dashboard-banner">
                 <Flower2 size={25} strokeWidth={1} />
                 <div>
-                  <strong>Your pilot, at a glance.</strong>
+                  <strong>Your salon, at a glance.</strong>
                   <p>
-                    These numbers come from this browser’s demo. No bookings,
-                    revenue or live customer activity are being reported.
+                    See recorded visits, customer activity and rewards in one
+                    place.
                   </p>
                 </div>
               </div>
@@ -374,8 +367,7 @@ export default function Dashboard() {
                   {
                     label: "Registered customers",
                     value: state.customers.length,
-                    description:
-                      "All-time local profiles, including the sample account.",
+                    description: "All registered customer profiles.",
                     Icon: Users,
                   },
                   {
@@ -451,7 +443,7 @@ export default function Dashboard() {
                     { label: "Page views", name: "page_view" },
                     { label: "Service category views", name: "service_view" },
                     { label: "WhatsApp enquiry clicks", name: "enquiry_click" },
-                    { label: "Demo registrations", name: "registration" },
+                    { label: "Account registrations", name: "registration" },
                     { label: "Rewards area views", name: "loyalty_view" },
                   ].map((m) => (
                     <div className="metric-row" key={m.name}>
@@ -469,7 +461,7 @@ export default function Dashboard() {
                     An enquiry click is not a confirmed booking. Completed
                     visits are recorded separately. Events contain no customer
                     identifiers. No retention or conversion claims are made. The
-                    demo retains the most recent 2,000 events and can be reset.
+                    activity log retains the most recent 2,000 events.
                   </small>
                 </section>
               </div>
@@ -478,7 +470,7 @@ export default function Dashboard() {
                   <ClipboardList size={21} />
                   <span>
                     Refresh your menu
-                    <small>Edit services and sample prices</small>
+                    <small>Edit services and prices</small>
                   </span>
                   <ArrowUpRight size={18} />
                 </button>
@@ -508,7 +500,6 @@ export default function Dashboard() {
                 </button>
               </div>
               <Notice>
-                All services and prices are sample content until approved.
                 Archiving hides a service and its offers from the public menu.
               </Notice>
               {state.services.map((s, i) => (
@@ -659,9 +650,7 @@ export default function Dashboard() {
                   >
                     <PhotoImage photo={p} />
                     <span className="tiny-tag">
-                      {p.placeholder
-                        ? "ILLUSTRATIVE STOCK"
-                        : "LOCAL DEMO UPLOAD"}
+                      {p.placeholder ? "UNSPLASH" : "SALON UPLOAD"}
                     </span>
                     <h3>{p.caption}</h3>
                     <p>{p.category}</p>
@@ -783,7 +772,7 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <p className="small">
-                      Sample rule: {business.loyalty.visits} visits →{" "}
+                      {business.loyalty.visits} visits →{" "}
                       {business.loyalty.reward}. Only record completed services.
                     </p>
                     <form
@@ -824,7 +813,7 @@ export default function Dashboard() {
                       onClick={() => {
                         const token = crypto.randomUUID();
                         setConfirm({
-                          title: "Redeem one sample reward?",
+                          title: "Redeem one reward?",
                           description: `Record ${business.loyalty.reward.toLowerCase()} for ${selectedCustomer.name}. This will use one earned reward.`,
                           action: () =>
                             execute({ type: "redeem", customerId, token }),
@@ -879,10 +868,7 @@ export default function Dashboard() {
           {panel === "Activity log" && (
             <section className="dashboard-card">
               <h2>A little accountability</h2>
-              <p>
-                Owner changes are recorded with their time and subject. Demo
-                logs can be reset and are not a tamper-proof production audit.
-              </p>
+              <p>Owner changes are recorded with their time and subject.</p>
               {!state.audit.length ? (
                 <div className="empty">
                   No changes yet. Saved owner actions will appear here.
@@ -909,7 +895,8 @@ export default function Dashboard() {
                           )[a.action] || a.action}
                         </strong>
                         <small>
-                          By {a.actor} · Subject{" "}
+                          By {a.actor === "demo-owner" ? "Owner" : a.actor} ·
+                          Subject{" "}
                           {state.customers.find((c) => c.id === a.subject)
                             ?.name ||
                             state.services.find((s) => s.id === a.subject)
@@ -930,58 +917,34 @@ export default function Dashboard() {
               )}
             </section>
           )}
-          {panel === "Demo settings" && (
+          {panel === "Settings" && (
             <section className="dashboard-card settings-card">
-              <h2>A safe space to try things.</h2>
+              <h2>Your workspace settings.</h2>
               <p>
-                This demo is isolated from Firebase. Everything is stored on
-                this device. Authentication, owner access and authorisation are
-                simulated and must not protect real customer data.
+                Manage the information saved in this workspace. Resetting clears
+                service changes, photos, customer records and activity history.
               </p>
-              <h3>Before going live</h3>
-              <ul>
-                <li>
-                  Confirm the service menu, prices, rewards, hours, address and
-                  WhatsApp number.
-                </li>
-                <li>
-                  Replace stock photos with photographs you own or have
-                  permission to use.
-                </li>
-                <li>
-                  Configure Boitumelo’s Firebase project and deploy reviewed
-                  rules and trusted server operations.
-                </li>
-                <li>
-                  Provision the owner’s administrator claim using a trusted
-                  server. Review privacy, retention and marketing consent.
-                </li>
-              </ul>
-              <Notice>
-                No cloud resources, billing, rules or deployment have been
-                created by this demo.
-              </Notice>
               <button
                 className="button danger-outline"
                 onClick={() =>
                   setConfirm({
-                    title: "Reset the whole demo?",
+                    title: "Reset workspace data?",
                     description:
-                      "This removes local profiles, photos, service edits, offers, visits, events and history. You will leave the owner demo. This cannot be undone.",
+                      "This removes local profiles, photos, service edits, offers, visits, events and history. You will be signed out. This cannot be undone.",
                     action: () => {
                       demo.resetDemo();
-                      toast("Demo reset. A fresh beginning.");
+                      toast("Workspace reset.");
                     },
                   })
                 }
               >
-                <RotateCcw size={16} /> Reset demo data
+                <RotateCcw size={16} /> Reset workspace data
               </button>
             </section>
           )}
         </main>
         <div className="dashboard-footer">
-          LOCAL DEMO · SYNTHETIC DATA · SOUTH AFRICAN TIME (UTC+2)
+          SOUTH AFRICAN TIME (UTC+2)
           <a href="#home">
             View website <ArrowUpRight size={13} />
           </a>
@@ -1111,7 +1074,7 @@ export default function Dashboard() {
             }{" "}
             received{" "}
             {state.services.find((s) => s.id === pendingVisit.serviceId)?.name}.
-            This adds one completed visit towards the sample reward.
+            This adds one completed visit towards the next reward.
           </p>
           <Notice>
             This submission has a unique identifier. Repeated submissions of
@@ -1283,7 +1246,7 @@ function PromotionEditor({
       {preview ? (
         <div className="promo-preview">
           {image && <PhotoImage photo={image} />}
-          <span className="eyebrow">SAMPLE OFFER PREVIEW</span>
+          <span className="eyebrow">OFFER PREVIEW</span>
           <h2>{p.title || "Your offer title"}</h2>
           <p>{p.description}</p>
           <div className="offer-price">
@@ -1432,7 +1395,7 @@ function PhotoEditor({
       set((old) => ({
         ...old,
         url,
-        source: "Owner demo upload",
+        source: "Salon upload",
         placeholder: false,
       }));
     } catch (e) {

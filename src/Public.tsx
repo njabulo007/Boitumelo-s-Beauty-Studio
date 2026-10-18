@@ -71,18 +71,6 @@ export default function Public() {
   }
   return (
     <>
-      <div className="preview-strip">
-        <span>
-          <span className="status-dot" /> A little preview of something
-          beautiful
-        </span>
-        <span>
-          Demo website · Sample services & prices{" "}
-          <a href="#preview-note">
-            Learn more <ArrowUpRight size={11} />
-          </a>
-        </span>
-      </div>
       <header className="site-header">
         <a className="wordmark" href="#home" aria-label="Boitumelo’s home">
           Boitumelo’s<span>BEAUTY SALON</span>
@@ -144,9 +132,6 @@ export default function Public() {
             {hero && (
               <PhotoImage photo={hero} priority className="hero-image" />
             )}
-            <span className="image-label">
-              A LITTLE INSPIRATION · STOCK PHOTOGRAPHY
-            </span>
             <div className="hero-stamp">
               <Flower2 size={32} strokeWidth={1} />
               <span>
@@ -194,9 +179,6 @@ export default function Public() {
                 <br />
                 find a little something that’s just for you.
               </p>
-              <span className="sample-label">
-                SAMPLE MENU · PRICES TO BE CONFIRMED
-              </span>
             </div>
           </div>
           <div className="services-layout">
@@ -270,7 +252,6 @@ export default function Public() {
                         <del>{money(s.price)}</del>
                       )}
                       <span>{money(displayedPrice(state, s))}</span>
-                      <small>SAMPLE PRICE</small>
                     </div>
                   </article>
                 ))}
@@ -291,7 +272,6 @@ export default function Public() {
                 photo={state.photos.find((p) => p.category === "Hair")!}
               />
             )}
-            <span className="image-label">ILLUSTRATIVE STOCK PHOTOGRAPHY</span>
           </div>
           <div className="about-copy">
             <span className="eyebrow">HELLO, BEAUTIFUL</span>
@@ -330,7 +310,7 @@ export default function Public() {
             <p className="intro-aside">
               A little treat to brighten your routine.
               <br />
-              Sample offers for this website preview.
+              Make a little time for yourself.
             </p>
           </div>
           {offers.length ? (
@@ -348,9 +328,7 @@ export default function Public() {
                     </span>
                   </div>
                   <div className="offer-copy">
-                    <span className="eyebrow">
-                      THE FEEL-GOOD EDIT · SAMPLE OFFER
-                    </span>
+                    <span className="eyebrow">THE FEEL-GOOD EDIT</span>
                     <h3>{p.title}</h3>
                     <p>{p.description}</p>
                     <div className="offer-price">
@@ -394,7 +372,7 @@ export default function Public() {
             <p className="intro-aside">
               A mood, a colour, a little inspiration.
               <br />
-              Stock images, until our own story is pictured.
+              Find inspiration for your next visit.
             </p>
           </div>
           <div className="filter-tabs" aria-label="Gallery categories">
@@ -425,9 +403,7 @@ export default function Public() {
                 </div>
                 <span className="gallery-caption">
                   {p.caption}
-                  <small>
-                    {p.category} {p.placeholder ? "· STOCK" : ""}
-                  </small>
+                  <small>{p.category}</small>
                 </span>
               </button>
             ))}
@@ -435,10 +411,6 @@ export default function Public() {
           {!gallery.length && (
             <p className="empty">No photographs in this category yet.</p>
           )}
-          <p className="image-disclaimer">
-            A note on our pictures: stock photographs are illustrative and do
-            not show Boitumelo’s work.
-          </p>
         </section>
         <section className="loyalty-banner">
           <div className="loyalty-art">
@@ -465,9 +437,8 @@ export default function Public() {
               Discover My Rewards <ArrowUpRight size={16} />
             </a>
             <small>
-              Sample programme: {business.loyalty.visits} completed visits →{" "}
-              {business.loyalty.reward.toLowerCase()}.<br />A preview only.
-              Final rewards and terms are subject to owner approval.
+              {business.loyalty.visits} completed visits →{" "}
+              {business.loyalty.reward.toLowerCase()}.
             </small>
           </div>
           <Heart className="loyalty-heart" size={100} strokeWidth={0.5} />
@@ -485,11 +456,11 @@ export default function Public() {
               },
               {
                 q: "Do I need an account to enquire?",
-                a: "No. You can browse the menu and enquire without an account. My Rewards is optional, for keeping track of your completed visits and sample rewards.",
+                a: "No. You can browse the menu and enquire without an account. My Rewards is optional, for keeping track of your completed visits and rewards.",
               },
               {
-                q: "Are these the salon’s final prices and photographs?",
-                a: "This is a pilot preview. Services, prices, offers and rewards are samples awaiting owner approval. Stock photography is illustrative and does not show the salon’s actual work.",
+                q: "How do loyalty rewards work?",
+                a: "Completed visits recorded by the salon count towards your rewards. Sign in to My Rewards to see your progress, and speak to the owner when you are ready to redeem a reward.",
               },
             ].map((f, i) => (
               <div className="faq" key={f.q}>
@@ -524,7 +495,14 @@ export default function Public() {
               <span>
                 <h3>Find your feel-good place</h3>
                 <p>{business.address || "Salon location to be confirmed."}</p>
-                <small>Confirmed directions will be shared here.</small>
+                <a
+                  className="small-link"
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Get directions <ArrowUpRight size={13} />
+                </a>
               </span>
             </div>
             <div>
@@ -558,17 +536,7 @@ export default function Public() {
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Boitumelo’s Beauty Salon</span>
-          <span>A customer & service validation pilot by Khulisa Media</span>
-          <a href="#preview-note">About this preview</a>
-        </div>
-        <div className="preview-note" id="preview-note">
-          <Sparkles size={15} />
-          <p>
-            <strong>You’re exploring a demo.</strong> Services, prices, rewards
-            and customer data are examples. Stock photos are illustrative. Edits
-            stay in this browser. Please use synthetic details and a demo-only
-            password. No real appointments are booked.
-          </p>
+          <span>Website by Khulisa Media</span>
         </div>
       </footer>
       {lightbox && (
@@ -584,11 +552,12 @@ export default function Public() {
                 <ArrowLeft />
               </button>
               <p>
-                {lightbox.category} ·{" "}
-                {lightbox.placeholder
-                  ? "Illustrative stock photo"
-                  : lightbox.source}
-                <small>{lightbox.source}</small>
+                {lightbox.category}
+                <small>
+                  {lightbox.placeholder
+                    ? "Photography: Unsplash"
+                    : lightbox.source}
+                </small>
               </p>
               <button
                 className="icon-button"

@@ -13,8 +13,8 @@ Open the development server in your usual local browser or supported editor prev
 
 - **Public website:** service categories, sample prices, automatic offer date filtering, gallery filters/lightbox, rewards introduction and contact information.
 - **My Rewards:** register with synthetic information and a demo-only password, sign in/out, explore the sample customer, edit your profile and view visit/reward history. Demo password reset explains that no email is sent. Live reset uses the prepared Firebase Auth adapter.
-- **Owner’s space:** click **Open owner demo**. Manage services, categories, offers and pictures; search customers; record completed visits; redeem rewards; correct visits with a reason; inspect the audit and overview. Mobile navigation is behind the menu icon.
-- **Reset:** Owner dashboard → Demo settings → Reset demo data → Confirm.
+- **Owner’s space:** click **Open owner dashboard**. Manage services, categories, offers and pictures; search customers; record completed visits; redeem rewards; correct visits with a reason; inspect the audit and overview. Mobile navigation is behind the menu icon.
+- **Reset:** Owner dashboard → Settings → Reset workspace data → Confirm.
 
 This is a local demonstration. Owner entry is intentionally open, not a secure production sign-in. Everything, including demo password hashes, is visible to somebody with browser storage access. **Never enter real personal information or a reused password.** Demo state uses localStorage; the active role uses sessionStorage. Browser sessions do not synchronise, and audit records are not tamper-proof. The app does not silently switch between demo and live data.
 
@@ -46,7 +46,7 @@ The inspiration reference `https://demos.spasalonweb.com/nailstudio/` was blocke
 
 ## Rules and limitations
 
-All services/prices/offers are clearly labelled samples. Set confirmed WhatsApp (international digits), hours and address using `.env.local` based on `.env.example`. Until a valid number is present, enquiry buttons show an unavailable message and never open a broken contact link. With a number, messages mention the selected service/offer; they are enquiries, not bookings.
+The interface omits demo banners and sample labels at the owner’s request; the underlying local-only architecture is unchanged. The configured address is 13074 Lehole Street, Tsakane, Brakpan. Initial services, prices, offers and rewards remain starter content pending owner approval. Set confirmed WhatsApp (international digits), hours and address using `.env.local` based on `.env.example`. Until a valid number is present, enquiry buttons show an unavailable message and never open a broken contact link. With a number, messages mention the selected service/offer; they are enquiries, not bookings.
 
 Sample rewards: every five owner-recorded completed visits earns 20% off one treatment. No expiry, no cash value, one reward per treatment, subject to owner approval. Change the central policy and trusted backend policy together before launch. Customers cannot record visits or redeem rewards. Retries of the same owner submission do not duplicate visits/rewards; distinct confirmations intentionally represent distinct completed visits. Corrections retain the original visit and reason; a correction cannot invalidate an already redeemed reward.
 

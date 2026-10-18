@@ -10,10 +10,14 @@ try {
   if (stored && stored.version !== 1) throw new Error("Incompatible demo");
   current = stored || seed();
   current.categories ??= seed().categories;
+  const starterCustomer = current.customers.find(
+    (c) => c.id === "sample" && c.name === "Lerato (sample)",
+  );
+  if (starterCustomer) starterCustomer.name = "Lerato";
 } catch {
   current = seed();
   storageError =
-    "Saved demo data could not be read. A fresh demo is shown; reset the demo to replace the saved copy.";
+    "Saved data could not be read. Reset the workspace to start again.";
 }
 let actor: Actor = null;
 try {
@@ -43,7 +47,7 @@ function persist(next: State) {
     localStorage.setItem(KEY, JSON.stringify(next));
   } catch {
     throw new Error(
-      "Browser storage is full or unavailable. Remove a photo or reset the demo. Your last change was not saved.",
+      "Browser storage is full or unavailable. Remove a photo or reset the workspace. Your last change was not saved.",
     );
   }
   current = next;
@@ -116,11 +120,11 @@ export async function register(
       "Add your name, a valid email and a password with at least 8 characters.",
     );
   if (current.customers.some((c) => c.email === email))
-    throw new Error("This email already has a demo account. Please sign in.");
+    throw new Error("This email already has an account. Please sign in.");
   const salt = crypto.randomUUID(),
     passwordHash = await hash(password, salt);
   if (current.customers.some((c) => c.email === email))
-    throw new Error("This email already has a demo account.");
+    throw new Error("This email already has an account.");
   const customer = {
     id: crypto.randomUUID(),
     name: name.trim(),
@@ -142,9 +146,7 @@ export async function login(email: string, password: string) {
     !customer.passwordHash ||
     (await hash(password, customer.salt)) !== customer.passwordHash
   )
-    throw new Error(
-      "Email or demo password is incorrect. Try again or explore the sample account.",
-    );
+    throw new Error("Email or password is incorrect. Please try again.");
   setActor({ role: "customer", id: customer.id });
 }
 export function updateProfile(name: string, marketing: boolean) {

@@ -40,7 +40,7 @@ export default function Rewards() {
       if (mode === "reset") {
         await new Promise((r) => setTimeout(r, 350));
         setSuccess(
-          "Demo mode cannot send password reset emails. Use the sample account or register a new demo email. Firebase Authentication will send reset emails after live setup.",
+          "Password reset emails are not available yet. Please contact the salon for help accessing your account.",
         );
       } else if (mode === "login")
         await demo.login(
@@ -70,10 +70,6 @@ export default function Rewards() {
           <ArrowLeft size={16} /> Back to the salon
         </a>
       </header>
-      <div className="account-demo">
-        <span className="status-dot" /> DEMO REWARDS · SAMPLE RULES · THIS
-        BROWSER ONLY
-      </div>
       {view?.customer ? (
         <main className="rewards-content">
           <div className="account-title">
@@ -120,15 +116,14 @@ export default function Rewards() {
               </div>
               <p>
                 {view.progress.available > 0
-                  ? `${view.progress.available} sample reward${view.progress.available > 1 ? "s" : ""} ready to redeem with the owner.`
+                  ? `${view.progress.available} reward${view.progress.available > 1 ? "s" : ""} ready to redeem with the owner.`
                   : `${view.progress.towards} of ${business.loyalty.visits} visits towards your next reward`}
               </p>
               <div className="reward-rule">
                 <strong>{business.loyalty.reward}</strong>
                 <span>
-                  Sample rule: every {business.loyalty.visits} completed visits
-                  earns one reward. No expiry in this demo. One reward per
-                  treatment; no cash value. Final terms need owner approval.
+                  Every {business.loyalty.visits} completed visits earns one
+                  reward. One reward per treatment; no cash value.
                 </span>
               </div>
               <small>
@@ -149,7 +144,7 @@ export default function Rewards() {
                       String(data.get("name")),
                       data.get("marketing") === "on",
                     );
-                    toast("Your demo profile has been saved.");
+                    toast("Your profile has been saved.");
                   } catch (e) {
                     toast((e as Error).message);
                   }
@@ -172,8 +167,7 @@ export default function Rewards() {
                     type="checkbox"
                     defaultChecked={view.customer.marketing}
                   />
-                  I’d like to hear about offers. Optional; no messages are sent
-                  in this demo.
+                  I’d like to hear about offers (optional).
                 </label>
                 <button className="button dark">
                   Save details <ArrowUpRight size={16} />
@@ -192,7 +186,7 @@ export default function Rewards() {
                   Once the owner records a completed visit, you’ll see it here.
                 </p>
                 <a href="#services" className="text-link">
-                  Explore the sample menu <ArrowUpRight size={15} />
+                  Explore the menu <ArrowUpRight size={15} />
                 </a>
               </div>
             ) : (
@@ -211,7 +205,7 @@ export default function Rewards() {
                   ...view.redemptions.map((r) => ({
                     id: r.id,
                     at: r.at,
-                    title: "Sample reward redeemed",
+                    title: "Reward redeemed",
                     detail: business.loyalty.reward,
                   })),
                 ]
@@ -245,9 +239,6 @@ export default function Rewards() {
             <div className="auth-flower">
               <Flower2 size={160} strokeWidth={0.5} />
             </div>
-            <span className="sample-label">
-              SAMPLE PROGRAMME · NO REAL REWARDS PROMISED
-            </span>
           </div>
           <div className="auth-card">
             <span className="eyebrow">MY REWARDS</span>
@@ -260,9 +251,9 @@ export default function Rewards() {
             </h2>
             <p>
               {mode === "register"
-                ? "Create a demo account to try the rewards experience."
+                ? "Create an account to keep track of your visits and rewards."
                 : mode === "reset"
-                  ? "Password reset is available with live Firebase setup."
+                  ? "Get help accessing your account."
                   : "Sign in to see your little moments add up."}
             </p>
             {mode !== "reset" && (
@@ -305,16 +296,13 @@ export default function Rewards() {
                   name="email"
                   type="email"
                   required
-                  placeholder="you@example.test"
+                  placeholder="you@example.com"
                   autoComplete="email"
                   maxLength={150}
                 />
               </Field>
               {mode !== "reset" && (
-                <Field
-                  label="Demo password"
-                  hint="Use a demo-only password, at least 8 characters."
-                >
+                <Field label="Password" hint="Use at least 8 characters.">
                   <input
                     name="password"
                     type="password"
@@ -329,8 +317,7 @@ export default function Rewards() {
               {mode === "register" && (
                 <label className="checkbox">
                   <input name="marketing" type="checkbox" />
-                  Keep me posted about offers (optional). No messages are sent
-                  in demo mode.
+                  Keep me posted about offers (optional).
                 </label>
               )}
               {error && <Notice error>{error}</Notice>}
@@ -339,7 +326,7 @@ export default function Rewards() {
                 {busy
                   ? "Just a moment…"
                   : mode === "register"
-                    ? "Create demo account"
+                    ? "Create account"
                     : mode === "reset"
                       ? "Show reset options"
                       : "Sign in"}
@@ -363,14 +350,13 @@ export default function Rewards() {
               className="button outline full"
               onClick={() => {
                 demo.setActor({ role: "customer", id: "sample" });
-                toast("You’re viewing a synthetic sample account.");
+                toast("Welcome to My Rewards.");
               }}
             >
-              Explore the sample account <ArrowRightIcon />
+              Explore rewards <ArrowRightIcon />
             </button>
             <p className="privacy-note">
-              This is a local demo, not secure live authentication. Please use
-              synthetic details. You can browse and enquire without an account.
+              You can browse and enquire without an account.
             </p>
           </div>
         </main>
